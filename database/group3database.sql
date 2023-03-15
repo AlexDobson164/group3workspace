@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2023 at 01:58 PM
+-- Generation Time: Mar 15, 2023 at 11:08 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -29,8 +29,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `client` (
   `ClientID` int(11) NOT NULL,
-  `ClientName` int(11) NOT NULL
+  `ClientName` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `client`
+--
+
+INSERT INTO `client` (`ClientID`, `ClientName`) VALUES
+(1, 'Waterman Group');
 
 -- --------------------------------------------------------
 
@@ -48,6 +55,15 @@ CREATE TABLE `complianceauditor` (
   `NumberOfRedNonComplience` int(11) NOT NULL,
   `NumberOfAudits` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `complianceauditor`
+--
+
+INSERT INTO `complianceauditor` (`AuditID`, `ClientID`, `Year`, `NumberOfAuditFindings`, `NumberOfGreenComplience`, `NumberOfAmberNonComplience`, `NumberOfRedNonComplience`, `NumberOfAudits`) VALUES
+(1, 1, 2020, 27, 23, 3, 1, 12),
+(2, 1, 2021, 33, 26, 3, 4, 14),
+(5, 1, 2022, 28, 23, 2, 3, 18);
 
 -- --------------------------------------------------------
 
@@ -68,6 +84,15 @@ CREATE TABLE `improvementtraker` (
   `NumberOfActionsClosedAfterDueDate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `improvementtraker`
+--
+
+INSERT INTO `improvementtraker` (`TrackerID`, `ClientID`, `Year`, `NumberOfActions`, `NumberOfActionsOpen`, `NumberOfDueActions`, `NumberOfOutstanding`, `NumberReqireingV&V`, `NumberOfActionsClosedBeforeDueDate`, `NumberOfActionsClosedAfterDueDate`) VALUES
+(1, 1, 2020, 22, 0, 0, 0, 0, 18, 4),
+(2, 1, 2021, 26, 3, 3, 3, 5, 15, 3),
+(3, 1, 2022, 32, 7, 3, 4, 2, 18, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -81,6 +106,13 @@ CREATE TABLE `legalregister` (
   `NumberOfAmberNonComplience` int(11) NOT NULL,
   `NumberOfGreenComplience` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `legalregister`
+--
+
+INSERT INTO `legalregister` (`RegisterID`, `ClientID`, `NumberOfRedNonComplience`, `NumberOfAmberNonComplience`, `NumberOfGreenComplience`) VALUES
+(1, 1, 3, 8, 14);
 
 -- --------------------------------------------------------
 
@@ -97,6 +129,13 @@ CREATE TABLE `riskregisters` (
   `NumberOfClimateOpportunities` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `riskregisters`
+--
+
+INSERT INTO `riskregisters` (`RiskID`, `ClientID`, `NumberOf60PlusAspects`, `NumberOf12PlusHazards`, `NumberOfClimateRisks`, `NumberOfClimateOpportunities`) VALUES
+(1, 1, 13, 8, 29, 34);
+
 -- --------------------------------------------------------
 
 --
@@ -104,10 +143,23 @@ CREATE TABLE `riskregisters` (
 --
 
 CREATE TABLE `useractions` (
+  `UserActionID` int(11) NOT NULL,
   `TrackerID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `NumberOfActions` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `useractions`
+--
+
+INSERT INTO `useractions` (`UserActionID`, `TrackerID`, `UserID`, `NumberOfActions`) VALUES
+(5, 1, 1, 4),
+(6, 1, 2, 3),
+(7, 2, 1, 8),
+(8, 2, 2, 2),
+(9, 3, 1, 7),
+(10, 3, 2, 12);
 
 -- --------------------------------------------------------
 
@@ -125,6 +177,14 @@ CREATE TABLE `users` (
   `Emails` text NOT NULL,
   `Permission` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`UserID`, `ClientID`, `FirstName`, `LastName`, `Username`, `Password`, `Emails`, `Permission`) VALUES
+(1, 1, 'John', 'Smith', 'JohnSmith123', 'password123', 'JohnSmith@gmail.com', 'Admin'),
+(2, 1, 'Jack', 'Woods', 'JackWoods123', '12345Password', 'Jackwoods@gmail.com', 'Basic');
 
 --
 -- Indexes for dumped tables
@@ -168,6 +228,7 @@ ALTER TABLE `riskregisters`
 -- Indexes for table `useractions`
 --
 ALTER TABLE `useractions`
+  ADD PRIMARY KEY (`UserActionID`),
   ADD KEY `TrackerID` (`TrackerID`),
   ADD KEY `UserID` (`UserID`);
 
@@ -176,6 +237,7 @@ ALTER TABLE `useractions`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`UserID`),
+  ADD UNIQUE KEY `Username` (`Username`,`Emails`) USING HASH,
   ADD KEY `ClientID` (`ClientID`);
 
 --
@@ -186,37 +248,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `complianceauditor`
 --
 ALTER TABLE `complianceauditor`
-  MODIFY `AuditID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AuditID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `improvementtraker`
 --
 ALTER TABLE `improvementtraker`
-  MODIFY `TrackerID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `TrackerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `legalregister`
 --
 ALTER TABLE `legalregister`
-  MODIFY `RegisterID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RegisterID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `riskregisters`
 --
 ALTER TABLE `riskregisters`
-  MODIFY `RiskID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RiskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `useractions`
+--
+ALTER TABLE `useractions`
+  MODIFY `UserActionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
