@@ -9,15 +9,13 @@
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
     <script src="http://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.export.js"></script>
-    
+
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
     <div>
         <h1>Performance Dashboard: Waterman Group</h1>
-    </div>
-    <div>
         <nav>
             <ul>
                 <li><a href="./my_dashboard.php" id="my_dashboard-link">My Dashboard</a></li>
@@ -25,21 +23,43 @@
             </ul>
         </nav>
     </div>
+    <div id="charts">
+        
 
 
-    <div id="chart-container">
-        <div id="chart">Chart Should Load Here...</div>
-        <select id="chartType">
-            <option value="bar2d">Bar Chart</option>
-            <option value="pie2d">Pie Chart</option>
-        </select>
-        <button id="export">Export</button>
-    </div>
-    
+        <div class="chart-container">
+            <div id="chart">Chart Should Load Here...</div>
+            <select id="chartType">
+                <option value="bar2d">Bar Chart</option>
+                <option value="pie2d">Pie Chart</option>
+            </select>
+            <button id="addChart">+</button>
+        </div>
 
+        <div class="chart-container">
+            <div id="chart2">Chart Should Load Here...</div>
+            <select id="chartType">
+                <option value="bar2d">Bar Chart</option>
+                <option value="pie2d">Pie Chart</option>
+            </select>
+        </div>
 
+        <div class="chart-container">
+            <div id="chart2">Chart Should Load Here...</div>
+            <select id="chartType">
+                <option value="bar2d">Bar Chart</option>
+                <option value="pie2d">Pie Chart</option>
+            </select>
+        </div>
 
-    <script src="./js/chart.js"></script>
+        <div class="chart-container">
+            <div id="chart2">Chart Should Load Here...</div>
+            <select id="chartType">
+                <option value="bar2d">Bar Chart</option>
+                <option value="pie2d">Pie Chart</option>
+            </select>
+        </div>
+        <script src="./js/chart.js"></script>
 </body>
 
 </html>

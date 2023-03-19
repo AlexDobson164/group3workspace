@@ -1,22 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+/* 
 
 
 
 body {
-    margin: 0;
-    padding: 0;
-    background: #e8e8e8;
-    font-family: 'IBM Plex Sans', sans-serif;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    font-size: 14px;
+    
 }
 
 h1 {
-    color: #34413e;
 }
 
 nav ul {
@@ -26,10 +16,7 @@ nav ul {
 }
 
 li {
-    margin: 5px;
-    background-color: #38f902;
-    padding: 9px 18px;
-    transition: 0.25s;
+    
 }
 
 li:hover {
@@ -37,7 +24,6 @@ li:hover {
 }
 
 a {
-    color: #2e816b;
     text-decoration: none;
 }
 
@@ -58,9 +44,10 @@ button {
 }
 
 
-#chart-container {
+.chart-container {
     width: 900px;
     height: 400px;
+    margin: 100px;
 }
 
 #chart{
@@ -79,7 +66,7 @@ button {
   }
   
   /* Style for the select options */
-  #chartType option {
+  /* #chartType option {
     background-color: #fff;
     color: #333;
   }
@@ -89,6 +76,85 @@ button {
     text-decoration: underline;
   }
 
-  .active-link {
-    text-decoration: underline;
-  }
+ */ 
+
+  
+
+
+
+
+
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+
+      body {
+    margin: 0;
+    padding: 0;
+    background: #e8e8e8;
+    font-family: 'IBM Plex Sans', sans-serif;
+    height: 100vh;
+    font-size: 14px;
+    }
+    
+    h1 {
+        text-align: center;
+        color: #34413e;
+    }
+    
+    nav {
+        text-align: center;
+    }
+    
+    nav ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+    
+    nav li {
+        display: inline-block;
+        margin: 5px;
+    background-color: #38f902;
+    padding: 9px 18px;
+    transition: 0.25s;
+    }
+
+    nav li:hover {
+        background-color: #2ed500;
+    }
+    
+    nav a {
+        color: #2e816b;
+        text-decoration: none;
+    }
+    
+    nav a:hover {
+        color: #898686;
+    }
+    
+    .chart-container {
+        display: inline-block;
+        margin: 20px;
+        text-align:  center;
+    }
+    
+    #chart, #chart2 {
+        width: 500px;
+        height: 400px;
+        margin: 20px auto;
+        border: 3px solid #ccc;
+    }
+    
+    select, button {
+        padding: 5px;
+        border-radius: 2.5px;
+        cursor: pointer;
+        color: #34413e;
+    }
+
+    .active-link {
+        text-decoration: underline;
+      }
+
+#charts {
+    text-align: center;
+}
