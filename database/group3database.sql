@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2023 at 08:50 AM
+-- Generation Time: Mar 20, 2023 at 01:50 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `group3database`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `archivedgraphs`
+--
+
+CREATE TABLE `archivedgraphs` (
+  `ArchiveID` int(11) NOT NULL,
+  `ClientID` int(11) NOT NULL,
+  `GraphID` int(11) NOT NULL,
+  `Date` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -164,6 +177,14 @@ INSERT INTO `users` (`UserID`, `ClientID`, `FirstName`, `LastName`, `username`, 
 --
 
 --
+-- Indexes for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  ADD PRIMARY KEY (`ArchiveID`),
+  ADD KEY `ClientID` (`ClientID`),
+  ADD KEY `GraphID` (`GraphID`);
+
+--
 -- Indexes for table `clients`
 --
 ALTER TABLE `clients`
@@ -209,6 +230,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  MODIFY `ArchiveID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
@@ -235,6 +262,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  ADD CONSTRAINT `archivedgraphs_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `clients` (`ClientID`),
+  ADD CONSTRAINT `archivedgraphs_ibfk_2` FOREIGN KEY (`GraphID`) REFERENCES `graphs` (`GraphID`);
 
 --
 -- Constraints for table `data`
