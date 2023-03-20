@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2023 at 08:09 PM
+-- Generation Time: Mar 20, 2023 at 01:50 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -18,8 +18,21 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `group3database2`
+-- Database: `group3database`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `archivedgraphs`
+--
+
+CREATE TABLE `archivedgraphs` (
+  `ArchiveID` int(11) NOT NULL,
+  `ClientID` int(11) NOT NULL,
+  `GraphID` int(11) NOT NULL,
+  `Date` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,7 +77,9 @@ INSERT INTO `data` (`DataID`, `GraphID`, `DataValue`, `DataText`, `DataType`) VA
 (4, 1, '50', '', 'AmberMaxValue'),
 (5, 1, '50', '', 'GreenMinValue'),
 (6, 1, '75', '', 'GreenMaxValue'),
-(7, 1, '64', '', 'ShownValue');
+(7, 1, '64', '', 'ShownValue'),
+(8, 2, '30', 'Section 1', 'PieChartValue'),
+(9, 2, '23', 'Section 2', 'PieChartValue');
 
 -- --------------------------------------------------------
 
@@ -83,7 +98,8 @@ CREATE TABLE `graphorderclient` (
 --
 
 INSERT INTO `graphorderclient` (`ClientID`, `GraphID`, `Position`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -103,7 +119,9 @@ CREATE TABLE `graphorderuser` (
 
 INSERT INTO `graphorderuser` (`UserID`, `GraphID`, `Position`) VALUES
 (3, 1, 1),
-(4, 1, 1);
+(4, 1, 1),
+(3, 2, 0),
+(4, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -126,7 +144,8 @@ CREATE TABLE `graphs` (
 --
 
 INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`) VALUES
-(1, 1, 'Test Angular Gauge', 'AngularGauage', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum et dui vel sagittis. Proin nec consequat mi. Nunc eros diam, pellentesque at pharetra quis, venenatis in purus. Cras bibendum.', '', '');
+(1, 1, 'Test Angular Gauge', 'AngularGauage', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum et dui vel sagittis. Proin nec consequat mi. Nunc eros diam, pellentesque at pharetra quis, venenatis in purus. Cras bibendum.', '', ''),
+(2, 1, 'Test Pie Chart', 'PieChart', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet lorem sit amet orci suscipit sagittis et eu est.', '', '');
 
 -- --------------------------------------------------------
 
@@ -156,6 +175,14 @@ INSERT INTO `users` (`UserID`, `ClientID`, `FirstName`, `LastName`, `username`, 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  ADD PRIMARY KEY (`ArchiveID`),
+  ADD KEY `ClientID` (`ClientID`),
+  ADD KEY `GraphID` (`GraphID`);
 
 --
 -- Indexes for table `clients`
@@ -203,6 +230,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  MODIFY `ArchiveID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
@@ -212,13 +245,13 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT for table `data`
 --
 ALTER TABLE `data`
-  MODIFY `DataID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `DataID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `graphs`
 --
 ALTER TABLE `graphs`
-  MODIFY `GraphID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `GraphID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -229,6 +262,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `archivedgraphs`
+--
+ALTER TABLE `archivedgraphs`
+  ADD CONSTRAINT `archivedgraphs_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `clients` (`ClientID`),
+  ADD CONSTRAINT `archivedgraphs_ibfk_2` FOREIGN KEY (`GraphID`) REFERENCES `graphs` (`GraphID`);
 
 --
 -- Constraints for table `data`
