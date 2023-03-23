@@ -15,8 +15,14 @@
 
 <body>
     <h1>Performance Dashboard: Waterman Group</h1>
-    <?php include_once("includes/nav.php") ?>
-    <?php include_once("includes/charts.php") ?>
+    <?php
+        include_once("includes/nav.php");
+        include_once("includes/charts.php");
+        session_start();
+        $UserID = $_SESSION['UserID'];
+        $Username = $_SESSION['username'];
+        $PermissionLevel = $_SESSION['permission'];
+    ?>
 </body>
 
 </html>
