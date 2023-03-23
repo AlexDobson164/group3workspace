@@ -18,10 +18,22 @@
     <?php
         include_once("includes/nav.php");
         include_once("includes/charts.php");
+        include("includes\DBConnection.php");
+        $conn = OpenCon();
         session_start();
         $UserID = $_SESSION['UserID'];
         $Username = $_SESSION['username'];
         $PermissionLevel = $_SESSION['permission'];
+        $query = "SELECT ClientID FROM users WHERE UserID = " . $UserID;
+        $request = $conn->query($query);
+        $row = $request->fetch_assoc();
+        $ClientID = $row["ClientID"];
+    ?>
+
+
+
+    <?php
+    CloseCon($conn);
     ?>
 </body>
 
