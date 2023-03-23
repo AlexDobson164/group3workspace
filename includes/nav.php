@@ -1,5 +1,4 @@
 <div>
-    <h1>Performance Dashboard: Waterman Group</h1>
     <nav>
         <ul>
             <li><a href="./my_dashboard.php" id="my_dashboard-link">My Dashboard</a></li>

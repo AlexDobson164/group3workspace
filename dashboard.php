@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <h1>Performance Dashboard: Waterman Group</h1>
     <?php include_once("includes/nav.php") ?>
     <?php include_once("includes/charts.php") ?>
 </body>

@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <h1>My Performance Board</h1>
     <?php include_once("includes/nav.php") ?>
     <?php include_once("includes/charts.php") ?>
 </body>
