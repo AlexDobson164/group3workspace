@@ -1,23 +1,11 @@
-<div id="main">
-
-</div>
-
-
-<nav>
-    <ul>
-        <li><a href="./my_dashboard.php">My Dashboard</a></li>
-        <li><a href="./dashboard.php">Waterman Group</a></li>
-    </ul>
-</nav>
-
-<div class="buttons">
-    <button id="chart1">Pie Chart</button>
-    <button id="chart2">Bar Chart</button>
-</div>
-
-<div id="chart-container">Chart</div>
-
-<div class="buttons">
-    <button id="chart1">Edit</button>
-    <button id="chart2">Delete</button>
+<div>
+    <h1>Performance Dashboard: Waterman Group</h1>
+    <nav>
+        <ul>
+            <li><a href="./my_dashboard.php" id="my_dashboard-link">My Dashboard</a></li>
+            <li><a href="./dashboard.php" id="dashboard-link">Waterman Group</a></li>
+            <button id="addChart">Add Chart</button>
+            <button id="addReport">New Report</button>
+        </ul>
+    </nav>
 </div>
