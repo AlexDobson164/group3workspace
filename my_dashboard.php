@@ -17,10 +17,19 @@
     <?php
         include_once("includes/nav.php");
         include_once("includes/charts.php");
+        include("includes\DBConnection.php");
+        $conn = OpenCon()
         session_start();
         $UserID = $_SESSION['UserID'];
         $Username = $_SESSION['username'];
         $PermissionLevel = $_SESSION['permission'];
+    ?>
+
+
+
+
+    <?php
+    CloseCon($conn);
     ?>
 </body>
 
