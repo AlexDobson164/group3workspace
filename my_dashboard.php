@@ -38,7 +38,7 @@
         session_start();
         //All the data that is related to the user is in this array, access the data by using the names of the database fields
         $userInfo = $_SESSION['userInfo'];
-        $query = "SELECT Position FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID'];
+        $query = "SELECT Position FROM graphorderuser WHERE ClientID = " . $userInfo['ClientID'];
         $graphOrder = $conn->query($query);
     ?>
 
@@ -51,7 +51,7 @@
             //start constucting the graph here
 
             //this part fetches the data for the graph from the database
-            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM 'data' WHERE GraphID = " . $graphID);
+            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
             while($dataRows = $rawGraphData->fetch_assoc()){
 
             }
