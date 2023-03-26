@@ -37,7 +37,7 @@
             //start constucting the graph here
 
             //this part fetches the data for the graph from the database
-            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM 'data' WHERE GraphID = " . $graphID);
+            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
             while($dataRows = $rawGraphData->fetch_assoc()){
 
             }
