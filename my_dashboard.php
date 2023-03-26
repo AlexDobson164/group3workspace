@@ -15,19 +15,7 @@
 
 <body>
     <h1>Performance Dashboard: Waterman Group</h1>
-    <?php
-        include_once("includes/nav.php");
-        include_once("includes/charts.php");
-        include("includes\DBConnection.php");
-        include("fusioncharts.php");
-        $conn = OpenCon();
-        session_start();
-        //All the data that is related to the user is in this array, access the data by using the names of the database fields
-        $userInfo = $_SESSION['userInfo'];
-        $query = "SELECT * FROM graphorderuser WHERE UserID = " . $userInfo['UserID'];
-        $graphOrder = $conn->query($query);
-        $graphOrderRows = $graphOrder->fetch_assoc();
-    ?>
+
 
     <?php
         include_once("includes/nav.php");
@@ -38,7 +26,7 @@
         session_start();
         //All the data that is related to the user is in this array, access the data by using the names of the database fields
         $userInfo = $_SESSION['userInfo'];
-        $query = "SELECT Position FROM graphorderuser WHERE ClientID = " . $userInfo['ClientID'];
+        $query = "SELECT Position FROM graphorderuser WHERE UserID = " . $userInfo['UserID'];
         $graphOrder = $conn->query($query);
     ?>
 
