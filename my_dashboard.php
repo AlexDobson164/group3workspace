@@ -20,13 +20,8 @@
         include("includes\DBConnection.php");
         $conn = OpenCon();
         session_start();
-        $UserID = $_SESSION['UserID'];
-        $Username = $_SESSION['username'];
-        $PermissionLevel = $_SESSION['permission'];
-        $query = "SELECT ClientID FROM users WHERE UserID = " . $UserID;
-        $request = $conn->query($query);
-        $row = $request->fetch_assoc();
-        $ClientID = $row["ClientID"];
+        //All the data that is related to the user is in this array, access the data by using the names of the database fields
+        $userInfo = $_SESSION['userInfo'];
     ?>
 
 

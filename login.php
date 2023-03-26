@@ -10,9 +10,10 @@ if (isset($_POST['login'])) {
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $_SESSION['UserID'] = $row['UserID'];
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['permission'] = $row['permission'];
+        $userDataQuery = "SELECT UserID, ClientID, FirstName, LastName, permission FROM users WHERE UserID = " . $row['UserID'];
+        $rawUserinfo = $conn->query($userDataQuery);
+        $userInfo = $rawUserinfo->fetch_assoc();
+        $_SESSION['userInfo'] = $userInfo;
         header("Location: dashboard.php");
 
     } else {
