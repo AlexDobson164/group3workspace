@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'db/database.php';
-
+include("includes\DBConnection.php");
+$conn = OpenCon();
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -10,19 +10,17 @@ if (isset($_POST['login'])) {
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['permission'] = $row['permission'];
-        if ($_SESSION['permission'] === 'Admin') {
-            header("Location: dashboard.php");
-            exit;
-        } else {
-            header("Location: my_dashboard.php");
-            exit;
-        }
+        $userDataQuery = "SELECT UserID, ClientID, FirstName, LastName, permission FROM users WHERE UserID = " . $row['UserID'];
+        $rawUserinfo = $conn->query($userDataQuery);
+        $userInfo = $rawUserinfo->fetch_assoc();
+        $_SESSION['userInfo'] = $userInfo;
+        header("Location: dashboard.php");
+
     } else {
         $error = "Invalid email or password";
     }
 }
+CloseCon($conn);
 ?>
 
 <!DOCTYPE html>
