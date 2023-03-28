@@ -1,29 +1,37 @@
-# LSEPI Concerns:
+# Relevant Issues: 
 
-## Issue Outline:
+## Correct Display of Data/ Application Testing:
 
-### Legal:
+> "[Robert Williams] was arrested last year on charges he’d taken watches from a Shinola store after police investigators used a facial recognition search of the store’s surveillance-camera footage that identified him as the thief." 
 
-- Ensure that the program complies with data protection laws and environmental laws when appropriate. This would also include legislation regarding the environmental field.
-- Ensure that the program does not hold the capacity to be used for criminal purposes i.e generating false environment reports or breaching environmental law.
-- Ensure that an up-to-date record is kept in regards to data processing and any legal issues in regard to said data. Said legal issues would require fast follow ups and responses.
+> "Prosecutors dropped the case less than two weeks later, arguing that officers had relied on insufficient evidence."
 
-### Security:
+> "Williams’s case sparked a public outcry about the fast-growing police use of a technology that research has shown often misidentifies people of color."
 
-- Ensuring that the application has implemented technological and legal measures to ensure that data is not being deleted, stolen or misused in any way that breaches the GDPR or Data Protection Act. 
-- Regular security checks of the code- Upkeep.
-- Implementing a permission based system on both the front and back-ends respectively, ensuring that both the database and application have permission levels that are accessed through login details. (Going further with this concept would include measures such as two factor authentication).
+In this case, the program that was developed to prosecute and protect the people of Detroit did not function properly, and thus led to a false arrest and, likely, a potential law suit. 
 
-### Ethics:
+This case not only highlighted the shoddy testing that was done on the program, but also that the program was not fit for purpose in the first place. The program was deployed for active use, and used in criminal case, thus the program had passed the testing phase. 
 
-- Ensuring that the program does not discriminate against those who may be less abled. (Following a11y and other accessibility standards within the design).
-- Consider the ethical ramifications of either notifying the government about serious environmental hazards and pollution or breaking company-client confidentiality as this would be a conflict of interest. Could pose ethical issues, possible breaches of environmental law depending how it's handled.
-- Ensuring that the program will not optimize environmental data for the purpose of hiding or ignoring environmental issues (Fixing a form of pollution or land damage to the point where it's legal, but not sustainable for the environment, for example).
+Although this article paints the police to be the ones at fault, they were just using a sanctioned tool at their disposal, akin to the way Waterman's clients will be using our tool. 
 
-### Interoperability:
+This relates to us and our client as they handle sensitive legal and environmental information. If said information carries any illicit or illegal connotation, Waterman is required to report the potential offender to the police.
 
-- Ensuring that the program can integrate with other programs the clients may use: Ensuring users can upload files from other applications such as Excel, containing their environmental information as opposed to manually inputting information within the application itself.
-- Making sure the application uses the industry standard in file formats to ensure smooth data exchange.
-- Take into account compatability issues that may stem from the program when faced with other programs and workflows (Unsupported file formats for data importation etc).
+Akin to how the police treated Mr Williams, in the event that our program does not display the correct data, or even represents data in an unclear way, this could put our client and their customers in legal trouble. 
 
-## Action plan (How are we going to use this knowledge in the production of the program): 
+Ensuring that we test this program for display accuracy and data representation is one of, if not, the most important issue relating to our further development of the program. 
+
+## GDPR:
+
+Keeping our data safe is the prime concern for a lot of the general public, and that doesn't change when referring to our client or their users. 
+
+Ensuring that data is being processed in a way that ensures good-faith and confidentiality (within the bounds of the program) is of the upmost importance, not just legally but also ethically. 
+
+There are cases such as the Caimbridge Analytica Scandal in which data is blatantly being sold for nefarious, advantageous or monetary gain. 
+
+
+
+
+
+
+
+https://www.washingtonpost.com/technology/2021/04/13/facial-recognition-false-arrest-lawsuit/
