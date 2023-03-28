@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2023 at 01:50 PM
+-- Generation Time: Mar 29, 2023 at 01:41 AM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -144,8 +144,8 @@ CREATE TABLE `graphs` (
 --
 
 INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`) VALUES
-(1, 1, 'Test Angular Gauge', 'AngularGauage', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum et dui vel sagittis. Proin nec consequat mi. Nunc eros diam, pellentesque at pharetra quis, venenatis in purus. Cras bibendum.', '', ''),
-(2, 1, 'Test Pie Chart', 'PieChart', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet lorem sit amet orci suscipit sagittis et eu est.', '', '');
+(1, 1, 'Test Angular Gauge', 'angulargauge', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum et dui vel sagittis. Proin nec consequat mi. Nunc eros diam, pellentesque at pharetra quis, venenatis in purus. Cras bibendum.', 'x', 'y'),
+(2, 1, 'Test Pie Chart', 'pie2d', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet lorem sit amet orci suscipit sagittis et eu est.', 'x', 'y');
 
 -- --------------------------------------------------------
 
