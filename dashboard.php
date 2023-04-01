@@ -36,14 +36,14 @@
         
             //loops through sql results
             //I'm aware three nested while loops is fucking retarded but here we are.
-            
+
             while ($row = mysqli_fetch_assoc($rawGraphInformation)) {
                 //determines which graph type/ config it needs to load.
                 //Loops until all rows returned in SQL are rendered. (I think)
                 
                 $graphName = $row['GraphName'];
-                $graphType = $row['GraphType'];
-                $graphText = $row['GraphText'];
+                $graphType = $row['GraphType']; //keeps the information stored for each loop,
+                $graphText = $row['GraphText']; //iterating causes the data to be lost and inaccessible.
 
                 switch($row['GraphType']){
 
@@ -99,7 +99,6 @@
                             $config->dials->dial = array(
                                 array(
                                     "value" => $angularData['ShownValue'],
-                                    "id" => "id"
                                 )
                             );
                            
@@ -117,8 +116,6 @@
                             // Render the chart
                             $angularChart->render();
                 }
-            
-            
             
         }
 
