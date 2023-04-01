@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2023 at 01:41 AM
+-- Generation Time: Apr 01, 2023 at 05:43 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -144,8 +144,8 @@ CREATE TABLE `graphs` (
 --
 
 INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`) VALUES
-(1, 1, 'Test Angular Gauge', 'angulargauge', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum et dui vel sagittis. Proin nec consequat mi. Nunc eros diam, pellentesque at pharetra quis, venenatis in purus. Cras bibendum.', 'x', 'y'),
-(2, 1, 'Test Pie Chart', 'pie2d', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet lorem sit amet orci suscipit sagittis et eu est.', 'x', 'y');
+(1, 1, 'Test Angular Gauge', 'angulargauge', 'Example Text', 'x', 'y'),
+(2, 1, 'Test Pie Chart', 'pie2d', 'Example Text', 'x', 'y');
 
 -- --------------------------------------------------------
 
