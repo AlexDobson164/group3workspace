@@ -27,102 +27,95 @@
     ?>
 
     <?php
-         while($graphOrderRows = $graphOrder->fetch_assoc()){
-            $rawGraphID = $conn->query("SELECT GraphID FROM graphorderclient WHERE Position = " . $graphOrderRows['Position'] . " AND ClientID = " . $userInfo['ClientID']);
-            $graphID = $rawGraphID->fetch_assoc()['GraphID'];
-            $rawGraphInformation = $conn->query("SELECT GraphName, GraphType, GraphText, XAxisName, YAxisName FROM graphs WHERE GraphID = " . $graphID);
-            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
+        //Consolidated the sql query, everything is now returned pertaining to a graph. 
 
-        
-            //loops through sql results
-            //I'm aware three nested while loops is fucking retarded but here we are.
+        $getAllInfo = "SELECT g.GraphID, g.GraphName, g.GraphType, g.GraphText, g.XAxisName, g.YAxisName, d.DataType, d.DataValue, d.DataText
+        FROM graphs g
+        INNER JOIN graphorderclient go ON go.GraphID = g.GraphID
+        INNER JOIN data d ON d.GraphID = g.GraphID
+        WHERE go.ClientID = {$userInfo['ClientID']}
+        ORDER BY go.Position ASC";
 
-            while ($row = mysqli_fetch_assoc($rawGraphInformation)) {
-                //determines which graph type/ config it needs to load.
-                //Loops until all rows returned in SQL are rendered. (I think)
-                
-                $graphName = $row['GraphName'];
-                $graphType = $row['GraphType']; //keeps the information stored for each loop,
-                $graphText = $row['GraphText']; //iterating causes the data to be lost and inaccessible.
+$result = $conn->query($getAllInfo);
 
-                switch($row['GraphType']){
+$currentGraphPosition = null;
 
-                    // < --- Angular Gauge Chart --- >
-                        case 'angulargauge':
-                            $angularQuery = "SELECT DataType, DataValue FROM data WHERE GraphID = ". $graphID;
-                            $angularResult = mysqli_query($conn, $angularQuery);
-                    
-                            // Build the associative array
-                            $angularData = array();
-                            while ($row = mysqli_fetch_assoc($angularResult)) {
-                                $dataType = $row['DataType'];
-                                $dataValue = $row['DataValue'];
-                                if (!isset($angularData[$dataType])) {
-                                    $angularData[$dataType] = array();
-                                }
-                                $angularData[$dataType][] = $dataValue;
-                                $currentGraphPosition = $graphOrderRows['Position'];
-                            }
-                    
-                            //access specific data here for the individual chart config,
-                            //i.e "minValue": $data['RedMinValue'], etc
-                            
-                            $config = new StdClass();
-                            $config->chart = new StdClass();
-                            $config->chart->caption = $graphName;
-                            $config->chart->subcaption = $graphText;
-                            $config->chart->plotToolText = $angularData['ShownValue'];
-                            $config->chart->theme = "fusion";
-                            $config->chart->chartBottomMargin = "50";
-                            $config->chart->showValue = "1";
-                    
-                            $config->colorRange = new StdClass();
-                            $config->colorRange->color = array(
-                                array(
-                                    "minValue" => $angularData['RedMinValue'],
-                                    "maxValue" => $angularData['RedMaxValue'],
-                                    "code" => "#e44a00"
-                                ),
-                                array(
-                                    "minValue" => $angularData['AmberMinValue'],
-                                    "maxValue" => $angularData['AmberMaxValue'],
-                                    "code" => "#f8bd19"
-                                ),
-                                array(
-                                    "minValue" => $angularData['GreenMinValue'],
-                                    "maxValue" => $angularData['GreenMaxValue'],
-                                    "code" => "#6baa01"
-                                )
-                            );
-                    
-                            $config->dials = new StdClass();
-                            $config->dials->dial = array(
-                                array(
-                                    "value" => $angularData['ShownValue'],
-                                )
-                            );
-                           
-                            //Use this variable to render the chart.
-                    
-                            $angularGaugeData = json_encode($config);
-
-                            
-                            echo "<div class=chart-container>";
-                            echo "<div id=\"chart-1\">Chart Should Load Here!</div>";
-                            echo "<button id=\"chartDelete\">Delete</button>";
-                            echo "</div>";
-
-                            $angularChart = new FusionCharts("angulargauge", "chart","500", "400", "chart-1", "json", $angularGaugeData);
-                            // Render the chart
-                            $angularChart->render();
+// iterates through returned rows, rendering each graph.
+while ($row = mysqli_fetch_assoc($result)) {
+    // filters the information depending on the graph type of the row.
+    switch($row['GraphType']) {
+        case 'angulargauge':
+            // Build the associative array: This allows you to access each part of the returned 'Data' values individually by name.
+            // i.e $data['RedMinValue'];
+            $angularData = array();
+            foreach ($result as $row) {
+                $dataType = $row['DataType'];
+                $dataValue = $row['DataValue'];
+                if (!isset($angularData[$dataType])) {
+                    $angularData[$dataType] = array();
                 }
+                $angularData[$dataType][] = $dataValue;
+            }
+
+            //constructs the fusionchart JSON config file.
+            $config = new StdClass();
+            $config->chart = new StdClass();
+            $config->chart->caption = $row['GraphName'];
+            $config->chart->subcaption = $row['GraphText'];
+            $config->chart->plotToolText = $angularData['ShownValue'];
+            $config->chart->theme = "fusion";
+            $config->chart->chartBottomMargin = "50";
+            $config->chart->showValue = "1";
+
+            $config->colorRange = new StdClass();
+            $config->colorRange->color = array(
+                array(
+                    "minValue" => $angularData['RedMinValue'],
+                    "maxValue" => $angularData['RedMaxValue'],
+                    "code" => "#e44a00"
+                ),
+                array(
+                    "minValue" => $angularData['AmberMinValue'],
+                    "maxValue" => $angularData['AmberMaxValue'],
+                    "code" => "#f8bd19"
+                ),
+                array(
+                    "minValue" => $angularData['GreenMinValue'],
+                    "maxValue" => $angularData['GreenMaxValue'],
+                    "code" => "#6baa01"
+                )
+            );
+
+            $config->dials = new StdClass();
+            $config->dials->dial = array(
+                array(
+                    "value" => $angularData['ShownValue'],
+                    "id" => "id"
+                )
+            );
+                           
+            //Use this variable to render the chart.
+                    
+            $angularGaugeData = json_encode($config);
+
+            //Temporarily uses a static chart name, will be adapted once I have other configurations added. 
+            //Not dynamic, if you want to implement any other graphs, please call them literally or interpolate the count into the render string.
+
+            echo "<div class=chart-container>";
+            echo "<div id=\"chart-1\">Chart Should Load Here!</div>";
+            echo "<button id=\"chartDelete\">Delete</button>";
+            echo "</div>";
+
+            $angularChart = new FusionCharts("angulargauge", "chart","500", "400", "chart-1", "json", $angularGaugeData);
+            // Render the chart
+            $angularChart->render();
+                
+        case 'pie2d':
             
         }
+    }
+    ?>
 
-    }         
-    ?>
-    <?php
-    CloseCon($conn);
-    ?>
+ <?php CloseCon($conn); ?>
 </body>
 </html>
