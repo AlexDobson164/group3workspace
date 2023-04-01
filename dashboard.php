@@ -16,7 +16,6 @@
     <h1>Performance Dashboard: Waterman Group</h1>
     <?php
         include_once("includes/nav.php");
-        include_once("includes/charts.php");
         include("includes\DBConnection.php");
         include("fusioncharts.php");
         $conn = OpenCon();
@@ -29,54 +28,101 @@
 
     <?php
          while($graphOrderRows = $graphOrder->fetch_assoc()){
-             $rawGraphID = $conn->query("SELECT GraphID FROM graphorderclient WHERE Position = " . $graphOrderRows['Position'] . " AND ClientID = " . $userInfo['ClientID']);
-             $graphID = $rawGraphID->fetch_assoc()['GraphID'];
-             $rawGraphInformation = $conn->query("SELECT GraphName, GraphType, GraphText, XAxisName, YAxisName FROM graphs WHERE GraphID = " . $graphID);
+            $rawGraphID = $conn->query("SELECT GraphID FROM graphorderclient WHERE Position = " . $graphOrderRows['Position'] . " AND ClientID = " . $userInfo['ClientID']);
+            $graphID = $rawGraphID->fetch_assoc()['GraphID'];
+            $rawGraphInformation = $conn->query("SELECT GraphName, GraphType, GraphText, XAxisName, YAxisName FROM graphs WHERE GraphID = " . $graphID);
+            $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
 
-             while($graphInformation = $rawGraphInformation->fetch_assoc()){
-                 $graphType = $graphInformation['GraphType'];
-                 $graphName = $graphInformation['GraphName'];
-                 $graphText = $graphInformation['GraphText'];
-                 $xAxisName = $graphInformation['XAxisName'];
-                 $yAxisName = $graphInformation['YAxisName'];
+            
+            //loops through sql results
 
-                 $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
+            while ($row = mysqli_fetch_assoc($rawGraphInformation)) {
+                $currentGraphID = $graphID;
+
+                //determines which graph type/ config it needs to load.
+                //Loops until all rows returned in SQL are rendered. (I think)
                 
-                 $chartData = array(
-                     "chart:" => array(
-                         "caption: " => $graphName,
-                         "subCaption: " => $graphText,
-                         "xAxisName: " => $xAxisName,
-                         "yAxisName: " => $yAxisName,
-                         "theme:" => "fusion"
-                     ),
-                     "data" => array()
-                 );
+                switch($row['GraphType']){
 
-                 while($dataRows = $rawGraphData->fetch_assoc()){
-                     $dataValue = $dataRows['DataValue'];
-                     $dataText = $dataRows['DataText'];
-                     $dataType = $dataRows['DataType'];
+                    // < --- Angular Gauge Chart --- >
+                        case 'angulargauge':
+                            $angularQuery = "SELECT DataType, DataValue FROM data WHERE GraphID = ". $graphID;
+                            $angularResult = mysqli_query($conn, $angularQuery);
+                    
+                            // Build the associative array
+                            $angularData = array();
+                            while ($row = mysqli_fetch_assoc($angularResult)) {
+                                $dataType = $row['DataType'];
+                                $dataValue = $row['DataValue'];
+                                if (!isset($angularData[$dataType])) {
+                                    $angularData[$dataType] = array();
+                                }
+                                $angularData[$dataType][] = $dataValue;
+                                $currentGraphPosition = $graphOrderRows['Position'];
+                            }
+                    
+                            //access specific data here for the individual chart config,
+                            //i.e "minValue": $data['RedMinValue'], etc
+                    
+                            $config = new StdClass();
+                            $config->chart = new StdClass();
+                            $config->chart->caption = "For some reason the titles aren't being pulled from \$row. Needs to be fixed" ;
+                            $config->chart->subcaption = "Data is being pulled though, too easy.";
+                            $config->chart->plotToolText = "Current Score:";
+                            $config->chart->theme = "fusion";
+                            $config->chart->chartBottomMargin = "50";
+                            $config->chart->showValue = "1";
+                    
+                            $config->colorRange = new StdClass();
+                            $config->colorRange->color = array(
+                                array(
+                                    "minValue" => $angularData['RedMinValue'],
+                                    "maxValue" => $angularData['RedMaxValue'],
+                                    "code" => "#e44a00"
+                                ),
+                                array(
+                                    "minValue" => $angularData['AmberMinValue'],
+                                    "maxValue" => $angularData['AmberMaxValue'],
+                                    "code" => "#f8bd19"
+                                ),
+                                array(
+                                    "minValue" => $angularData['GreenMinValue'],
+                                    "maxValue" => $angularData['GreenMaxValue'],
+                                    "code" => "#6baa01"
+                                )
+                            );
+                    
+                            $config->dials = new StdClass();
+                            $config->dials->dial = array(
+                                array(
+                                    "value" => $angularData['ShownValue'],
+                                    "id" => "Whatever the fuck"
+                                )
+                            );
+                           
+                            //Use this variable to render the chart.
+                    
+                            $angularGaugeData = json_encode($config);
 
-                     $chartData["data"][] = array(
-                         "label: " => $dataText,
-                         "value: " => $dataValue
-                     );
-                 }
+                            
+                            echo "<div class=chart-container>";
+                            echo "<div id=\"chart-1\">Chart Should Load Here!</div>";
+                            echo "<button id=\"chartDelete\">Delete</button>";
+                            echo "</div>";
 
-                 $fcChart = new FusionCharts($graphType, $graphName, '600', '400', 'graph-' . $graphID, 'json', json_encode($chartData));
+                            $angularChart = new FusionCharts("angulargauge", "chart","600", "600", "chart-1", "json", $angularGaugeData);
+                            // Render the chart
+                            $angularChart->render();
+                }
+            
+            
+            
+        }
 
-                  echo '<div class="chart-container">';
-                  echo '<h2>' . $graphName . '</h2>';
-                  echo '<div id="graph-' . $graphID . '">' . $fcChart->render() . '</div>';
-                  echo '</div>';
-                      }
-             }
+    }         
     ?>
-
     <?php
     CloseCon($conn);
     ?>
 </body>
-
 </html>
