@@ -33,15 +33,18 @@
             $rawGraphInformation = $conn->query("SELECT GraphName, GraphType, GraphText, XAxisName, YAxisName FROM graphs WHERE GraphID = " . $graphID);
             $rawGraphData = $conn->query("SELECT DataValue, DataText, DataType FROM data WHERE GraphID = " . $graphID);
 
-            
+        
             //loops through sql results
-
+            //I'm aware three nested while loops is fucking retarded but here we are.
+            
             while ($row = mysqli_fetch_assoc($rawGraphInformation)) {
-                $currentGraphID = $graphID;
-
                 //determines which graph type/ config it needs to load.
                 //Loops until all rows returned in SQL are rendered. (I think)
                 
+                $graphName = $row['GraphName'];
+                $graphType = $row['GraphType'];
+                $graphText = $row['GraphText'];
+
                 switch($row['GraphType']){
 
                     // < --- Angular Gauge Chart --- >
@@ -63,12 +66,12 @@
                     
                             //access specific data here for the individual chart config,
                             //i.e "minValue": $data['RedMinValue'], etc
-                    
+                            
                             $config = new StdClass();
                             $config->chart = new StdClass();
-                            $config->chart->caption = "For some reason the titles aren't being pulled from \$row. Needs to be fixed" ;
-                            $config->chart->subcaption = "Data is being pulled though, too easy.";
-                            $config->chart->plotToolText = "Current Score:";
+                            $config->chart->caption = $graphName;
+                            $config->chart->subcaption = $graphText;
+                            $config->chart->plotToolText = $angularData['ShownValue'];
                             $config->chart->theme = "fusion";
                             $config->chart->chartBottomMargin = "50";
                             $config->chart->showValue = "1";
@@ -96,7 +99,7 @@
                             $config->dials->dial = array(
                                 array(
                                     "value" => $angularData['ShownValue'],
-                                    "id" => "Whatever the fuck"
+                                    "id" => "id"
                                 )
                             );
                            
@@ -110,7 +113,7 @@
                             echo "<button id=\"chartDelete\">Delete</button>";
                             echo "</div>";
 
-                            $angularChart = new FusionCharts("angulargauge", "chart","600", "600", "chart-1", "json", $angularGaugeData);
+                            $angularChart = new FusionCharts("angulargauge", "chart","500", "400", "chart-1", "json", $angularGaugeData);
                             // Render the chart
                             $angularChart->render();
                 }
