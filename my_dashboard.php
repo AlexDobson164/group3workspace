@@ -32,7 +32,6 @@
     $count = 0; //counts how many times the loop has fired, used to increment the chart-id's programatically.
     while($graphOrderRows = $graphOrder->fetch_assoc()){
             $graphID = $graphOrderRows['GraphID'];
-            echo $graphID;
             $getGraphTypes = "SELECT GraphID, GraphType, GraphText, config from graphs WHERE GraphID = ". $graphID;
             $GraphTypes = $conn->query($getGraphTypes);
             $currentGraphPosition = null;
