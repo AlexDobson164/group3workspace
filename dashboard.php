@@ -17,39 +17,41 @@
     <?php
         include_once("includes/nav.php");
         include("includes\DBConnection.php");
+        //This file is a include that makes it so that we can make graphs directky with PHP
+        //This is the link to the GitHub Page: https://github.com/fusioncharts/php-wrapper#constructor-parameters
         include("fusioncharts.php");
         $conn = OpenCon();
         session_start();
         //All the data that is related to the user is in this array, access the data by using the names of the database fields
         $userInfo = $_SESSION['userInfo'];
-        $query = "SELECT Position FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID'];
+        $query = "SELECT GraphID FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID']. " ORDER BY Position";
         $graphOrder = $conn->query($query);
     ?>
 
     <?php
-    $getGraphTypes = "SELECT GraphID, GraphType, GraphText, config from graphs WHERE ClientID = {$userInfo['ClientID']}";
-    $GraphTypes = $conn->query($getGraphTypes);
-    $currentGraphPosition = null;
     $count = 0; //counts how many times the loop has fired, used to increment the chart-id's programatically.
-
-    while ($row = mysqli_fetch_assoc($GraphTypes)) {
-        $count++;
-
-        echo "<div class=chart-container>";
-        echo "<div id=\"chart-$count\">Chart Should Load Here!</div>";
-        echo "<button id=\"chartDelete\">Delete</button>";
-        echo "</div>";
-
-        $width = 500;
-        $height= 400;
-        // Retrieve the FusionCharts configuration from the database
-        $config = json_decode($row['config'], true); // $row is the database row for the chart
-
-        // Render the chart using the retrieved configuration
-        $newChart = new FusionCharts($row['GraphType'], $row['GraphID'].$count, $width, $height, "chart-".$count, "json", json_encode($config));
-        $newChart->render();
+    while($graphOrderRows = $graphOrder->fetch_assoc()){
+            $graphID = $graphOrderRows['GraphID'];
+            $getGraphTypes = "SELECT GraphID, GraphType, GraphText, config from graphs WHERE GraphID = ". $graphID;
+            $GraphTypes = $conn->query($getGraphTypes);
+            $currentGraphPosition = null;
+        
+            $row = mysqli_fetch_assoc($GraphTypes);
+            $count++;
+            echo "<div class=chart-container>";
+            echo "<div id=\"chart-$count\">Chart Should Load Here!</div>";
+            echo "<button id=\"chartDelete\">Delete</button>";
+            echo "</div>";
+        
+            $width = 500;
+            $height= 400;
+            // Retrieve the FusionCharts configuration from the database
+            $config = json_decode($row['config'], true); // $row is the database row for the chart
+        
+            // Render the chart using the retrieved configuration
+            $newChart = new FusionCharts($row['GraphType'], $row['GraphID'].$count, $width, $height, "chart-".$count, "json", json_encode($config));
+            $newChart->render();
     }
-    
     ?>
 
  <?php CloseCon($conn); ?>
