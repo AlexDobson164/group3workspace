@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2023 at 05:43 AM
+-- Generation Time: Apr 05, 2023 at 03:06 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -78,8 +78,8 @@ INSERT INTO `data` (`DataID`, `GraphID`, `DataValue`, `DataText`, `DataType`) VA
 (5, 1, '50', '', 'GreenMinValue'),
 (6, 1, '75', '', 'GreenMaxValue'),
 (7, 1, '64', '', 'ShownValue'),
-(8, 2, '30', 'Section 1', 'PieChartValue'),
-(9, 2, '23', 'Section 2', 'PieChartValue');
+(8, 2, '30', 'Section 1', 'PieChartValue0'),
+(9, 2, '23', 'Section 2', 'PieChartValue1');
 
 -- --------------------------------------------------------
 
@@ -136,16 +136,17 @@ CREATE TABLE `graphs` (
   `GraphType` text NOT NULL,
   `GraphText` text NOT NULL,
   `XAxisName` text NOT NULL,
-  `YAxisName` text NOT NULL
+  `YAxisName` text NOT NULL,
+  `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`config`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `graphs`
 --
 
-INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`) VALUES
-(1, 1, 'Test Angular Gauge', 'angulargauge', 'Example Text', 'x', 'y'),
-(2, 1, 'Test Pie Chart', 'pie2d', 'Example Text', 'x', 'y');
+INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`, `config`) VALUES
+(1, 1, 'Test Angular Gauge', 'angulargauge', 'Example Text', 'x', 'y', '{\n    \"chart\": {\n        \"caption\": \"Angular Graph\",\n        \"subcaption\": \"Decoding Config Direct From JSON!\",\n        \"plotToolText\": \"64\",\n        \"theme\": \"fusion\",\n        \"chartBottomMargin\": \"50\",\n        \"showValue\": \"1\"\n    },\n    \"colorRange\": {\n        \"color\": [\n            {\n                \"minValue\": \"0\",\n                \"maxValue\": \"25\",\n                \"code\": \"#e44a00\"\n            },\n            {\n                \"minValue\": \"25\",\n                \"maxValue\": \"50\",\n                \"code\": \"#f8bd19\"\n            },\n            {\n                \"minValue\": \"50\",\n                \"maxValue\": \"75\",\n                \"code\": \"#6baa01\"\n            }\n        ]\n    },\n    \"dials\": {\n        \"dial\": [\n            {\n                \"value\": \"64\",\n                \"id\": \"id\"\n            }\n        ]\n    }\n}\n'),
+(2, 1, 'Test Pie Chart', 'pie2d', 'Example Text', 'x', 'y', '{\n  \"chart\": {\n    \"caption\": \"Market Share of Web Servers\",\n    \"plottooltext\": \"<b>$percentValue</b> of web servers run on $label servers\",\n    \"showlegend\": \"1\",\n    \"showpercentvalues\": \"1\",\n    \"legendposition\": \"bottom\",\n    \"usedataplotcolorforlabels\": \"1\",\n    \"theme\": \"fusion\"\n  },\n  \"data\": [\n    {\n      \"label\": \"Apache\",\n      \"value\": \"32647479\"\n    },\n    {\n      \"label\": \"Microsoft\",\n      \"value\": \"22100932\"\n    },\n    {\n      \"label\": \"Zeus\",\n      \"value\": \"14376\"\n    },\n    {\n      \"label\": \"Other\",\n      \"value\": \"18674221\"\n    }\n  ]\n}');
 
 -- --------------------------------------------------------
 
