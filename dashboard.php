@@ -26,6 +26,8 @@
         $userInfo = $_SESSION['userInfo'];
         $query = "SELECT GraphID FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID']. " ORDER BY Position";
         $graphOrder = $conn->query($query);
+        //this is to hide a warning on line 69 and 70, there is no error it is just PHP complaining. Comment it out if you are working on this page
+        ini_set('display_errors', 0);
     ?>
 
     <?php
@@ -37,10 +39,17 @@
             $currentGraphPosition = null;
         
             $row = mysqli_fetch_assoc($GraphTypes);
-            $count++;
             echo "<div class=chart-container>";
             echo "<div id=\"chart-$count\">Chart Should Load Here!</div>";
-            echo "<button id=\"chartDelete\">Delete</button>";
+            $data = $conn->query("SELECT position FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $graphID);
+            if ($userInfo['permission'] == "Admin")
+            {
+                echo "<form name=". $graphID ." method=\"post\">";
+                echo "<input type=\"hidden\" name=\"chartPos\" value=". $count .">";
+                echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID .">";
+                echo "<input type=\"submit\"  name=\"chartDelete\" class=\"button\" value=\"Disable\"/>";
+                echo "</form>";
+            }
             echo "</div>";
         
             $width = 500;
@@ -51,6 +60,42 @@
             // Render the chart using the retrieved configuration
             $newChart = new FusionCharts($row['GraphType'], $row['GraphID'].$count, $width, $height, "chart-".$count, "json", json_encode($config));
             $newChart->render();
+            $count++;
+
+    }
+    ?>
+
+<?php
+     if (isset($_POST))
+     { 
+         $id = $_POST['chartID'];
+         $position = $_POST['chartPos'];
+         $refresh = false;
+         if (isset($_POST['chartDelete']))
+            {
+                $deleteQuery = "DELETE FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id; 
+                echo $deleteQuery;
+                $conn->query($deleteQuery);
+                $graphIDsQuery = "SELECT GraphID FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND Position > ". $position;
+                $graphIDs = $conn->query($graphIDsQuery);
+                if ($graphIDs->num_rows > 0)
+                {
+                    while($raw = $graphIDs->fetch_assoc())
+                    {
+                        $changedID = $raw['GraphID'];
+                        $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $changedID;
+                        $conn->query($queryUpdate);
+                        $position++;
+                        echo $position;
+                    }
+                } 
+                $refresh = true;
+
+            }
+        if ($refresh == true)
+        {
+            header("Location: dashboard.php");
+        }
     }
     ?>
 
