@@ -26,6 +26,8 @@
         $userInfo = $_SESSION['userInfo'];
         $query = "SELECT GraphID FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID']. " ORDER BY Position";
         $graphOrder = $conn->query($query);
+        //this is to hide a warning on line 69 and 70, there is no error it is just PHP complaining. Comment it out if you are working on this page
+        ini_set('display_errors', 0);
     ?>
 
     <?php
