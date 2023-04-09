@@ -81,7 +81,6 @@
                         $queryUpdate = "UPDATE graphorderuser SET Position = ". $position ." WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $changedID;
                         $conn->query($queryUpdate);
                         $position++;
-                        echo $position;
                     }
                 } 
                 $refresh = true;
