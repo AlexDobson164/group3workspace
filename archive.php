@@ -51,11 +51,11 @@
         if ($userInfo['permission'] == 'Admin') 
         {
             $data = $conn->query("SELECT position FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $graphID);
-            if ($data->num_rows < 0 and $userInfo['permission'] == "Admin")
+            if ($data->num_rows < 0)
             {
                 echo "<input type=\"submit\"  name=\"chartAddCompany\" class=\"button\" value=\"Add To Company Dashboard\"/>";
-                echo "<input type=\"submit\"  name=\"chartDelete\" class=\"button\" value=\"Delete\"/>";
             }
+            echo "<input type=\"submit\"  name=\"chartDelete\" class=\"button\" value=\"Delete\"/>";
         }
         echo "</form>";
         echo "</div>";
