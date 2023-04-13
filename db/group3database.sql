@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2023 at 12:04 PM
+-- Generation Time: Apr 13, 2023 at 12:12 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -101,6 +101,14 @@ CREATE TABLE `graphorderclient` (
   `Position` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `graphorderclient`
+--
+
+INSERT INTO `graphorderclient` (`ClientID`, `GraphID`, `Position`) VALUES
+(1, 1, 1),
+(1, 2, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -118,10 +126,10 @@ CREATE TABLE `graphorderuser` (
 --
 
 INSERT INTO `graphorderuser` (`UserID`, `GraphID`, `Position`) VALUES
-(3, 1, 1),
+(3, 1, 0),
 (4, 1, 1),
-(3, 2, 0),
-(4, 2, 0);
+(4, 2, 0),
+(3, 2, 1);
 
 -- --------------------------------------------------------
 
