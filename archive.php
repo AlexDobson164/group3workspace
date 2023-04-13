@@ -43,7 +43,7 @@
         echo "<form name=". $graphID ." method=\"post\">";
         echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID .">";
         $data = $conn->query("SELECT position FROM graphorderuser WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $graphID);
-        if ($data->num_rows < 0)
+        if ($data->num_rows == 0)
         {
             echo "<input type=\"submit\"  name=\"chartAddPersonal\" class=\"button\" value=\"Add To My Dashboard\"/>";
         }
@@ -51,7 +51,7 @@
         if ($userInfo['permission'] == 'Admin') 
         {
             $data = $conn->query("SELECT position FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $graphID);
-            if ($data->num_rows < 0)
+            if ($data->num_rows == 0)
             {
                 echo "<input type=\"submit\"  name=\"chartAddCompany\" class=\"button\" value=\"Add To Company Dashboard\"/>";
             }
