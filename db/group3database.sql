@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2023 at 03:06 AM
+-- Generation Time: Apr 13, 2023 at 12:04 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,6 +33,14 @@ CREATE TABLE `archivedgraphs` (
   `GraphID` int(11) NOT NULL,
   `Date` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `archivedgraphs`
+--
+
+INSERT INTO `archivedgraphs` (`ArchiveID`, `ClientID`, `GraphID`, `Date`) VALUES
+(1, 1, 1, '07/04/2023'),
+(2, 1, 2, '13/04/2023');
 
 -- --------------------------------------------------------
 
@@ -92,14 +100,6 @@ CREATE TABLE `graphorderclient` (
   `GraphID` int(11) NOT NULL,
   `Position` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `graphorderclient`
---
-
-INSERT INTO `graphorderclient` (`ClientID`, `GraphID`, `Position`) VALUES
-(1, 1, 1),
-(1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -234,7 +234,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `archivedgraphs`
 --
 ALTER TABLE `archivedgraphs`
-  MODIFY `ArchiveID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ArchiveID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `clients`
