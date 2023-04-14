@@ -16,7 +16,8 @@
     <h1>Performance Dashboard: Waterman Group</h1>
     <?php
         include_once("includes/nav.php");
-        include("includes\DBConnection.php");
+        include("includes/addGraph.php");
+        include("includes/DBConnection.php");
         //This file is a include that makes it so that we can make graphs directky with PHP
         //This is the link to the GitHub Page: https://github.com/fusioncharts/php-wrapper#constructor-parameters
         include("fusioncharts.php");
@@ -100,4 +101,5 @@
 
  <?php CloseCon($conn); ?>
 </body>
+<script type="text/javascript" src="./js/addGraph.js"></script>
 </html>
