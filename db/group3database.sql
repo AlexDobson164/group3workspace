@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2023 at 12:12 PM
+-- Generation Time: Apr 15, 2023 at 04:31 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -126,10 +126,10 @@ CREATE TABLE `graphorderuser` (
 --
 
 INSERT INTO `graphorderuser` (`UserID`, `GraphID`, `Position`) VALUES
-(3, 1, 0),
-(4, 1, 1),
-(4, 2, 0),
-(3, 2, 1);
+(4, 1, 2),
+(4, 2, 1),
+(3, 1, 1),
+(3, 2, 2);
 
 -- --------------------------------------------------------
 
