@@ -33,6 +33,7 @@
     <?php
     $count = 0; //counts how many times the loop has fired, used to increment the chart-id's programatically.
     while($graphOrderRows = $graphOrder->fetch_assoc()){
+            $count++;
             $graphID = $graphOrderRows['GraphID'];
             $getGraphTypes = "SELECT GraphID, GraphType, GraphText, config from graphs WHERE GraphID = ". $graphID;
             $GraphTypes = $conn->query($getGraphTypes);
@@ -44,16 +45,15 @@
             echo "<form name=". $graphID ." method=\"post\">";
             echo "<input type=\"hidden\" name=\"chartPos\" value=". $count .">";
             echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID .">";
-            if ($count != 0)
+            if ($count != 1)
                 {
                     echo "<input type=\"submit\" name=\"chartMoveUp\" class=\"button\" value=\"<--\"/>";
                 }
             echo "<input type=\"submit\" name=\"chartDelete\" class=\"button\" value=\"Disable\"/>";
             //disbles the arrow on the right if it is the last graph
-            $highestPosition = $conn->query("SELECT position FROM graphorderClient WHERE ClientID = ". $userInfo['ClientID'] ." ORDER BY Position DESC")->fetch_assoc()['position'];
+            $highestPosition = $conn->query("SELECT position FROM graphorderuser WHERE userID = ". $userInfo['UserID'] ." ORDER BY Position DESC")->fetch_assoc()['position'];
             settype($highestPosition, 'int');
-            $checkposition = $count + 1;
-            if ($checkposition != $highestPosition)
+            if ($count != $highestPosition)
             {
                 echo "<input type=\"submit\" name=\"chartMoveDown\" class=\"button\" value=\"-->\"/>";
             }
@@ -68,7 +68,6 @@
             // Render the chart using the retrieved configuration
             $newChart = new FusionCharts($row['GraphType'], $row['GraphID'].$count, $width, $height, "chart-".$count, "json", json_encode($config));
             $newChart->render();
-            $count++;
     }
     ?>
 
@@ -82,7 +81,7 @@
         {
             $deleteQuery = "DELETE FROM graphorderuser WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $id; 
             $conn->query($deleteQuery);
-            $graphIDsQuery = "SELECT GraphID FROM graphorderuser WHERE UserID = ". $userInfo['UserID'] ." AND Position > ". $position;
+            $graphIDsQuery = "SELECT GraphID FROM graphorderuser WHERE userID = ". $userInfo['UserID'] ." AND Position > ". $position;
             $graphIDs = $conn->query($graphIDsQuery);
             if ($graphIDs->num_rows > 0)
             {
@@ -98,20 +97,20 @@
         }
         elseif (isset($_POST['chartMoveUp']))
         {
-            $queryUpdate = "UPDATE graphorderuser SET Position = ". ($position+1) ." WHERE userID = ". $userInfo['UserID'] ." AND Position = ". $position;
+            $queryUpdate = "UPDATE graphorderuser SET Position = ". $position ." WHERE userID = ". $userInfo['UserID'] ." AND Position = ". ($position-1);
             $conn->query($queryUpdate);
-            $queryUpdate = "UPDATE graphorderuser SET Position = ". $position ." WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $id;
+            $queryUpdate = "UPDATE graphorderuser SET Position = ". ($position-1) ." WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $id;
             $conn->query($queryUpdate);
             $refresh = true;
         }
         elseif (isset($_POST['chartMoveDown']))
         {
-            $queryUpdate = "UPDATE graphorderuser SET Position = ". ($position+1) ." WHERE userID = ". $userInfo['UserID'] ." AND Position = ". ($position+2);
+            $queryUpdate = "UPDATE graphorderuser SET Position = ". $position ." WHERE userID = ". $userInfo['UserID'] ." AND Position = ". ($position+1);
             $conn->query($queryUpdate);
-            $queryUpdate = "UPDATE graphorderuser SET Position = ". ($position+2) ." WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $id;
+            $queryUpdate = "UPDATE graphorderuser SET Position = ". ($position+1) ." WHERE userID = ". $userInfo['UserID'] ." AND graphID = ". $id;
             $conn->query($queryUpdate);
             $refresh = true;
-        }    
+        }
         if ($refresh == true)
         {
             header("Location: my_dashboard.php");
