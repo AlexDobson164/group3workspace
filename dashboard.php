@@ -48,7 +48,20 @@
                 echo "<form name=". $graphID ." method=\"post\">";
                 echo "<input type=\"hidden\" name=\"chartPos\" value=". $count .">";
                 echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID .">";
+                //disables the left arrow if the graph is the first one
+                if ($count != 0)
+                {
+                    echo "<input type=\"submit\" name=\"chartMoveUp\" class=\"button\" value=\"<--\"/>";
+                }
                 echo "<input type=\"submit\"  name=\"chartDelete\" class=\"button\" value=\"Disable\"/>";
+                //disbles the arrow on the right if it is the last graph
+                $highestPosition = $conn->query("SELECT position FROM graphorderClient WHERE ClientID = ". $userInfo['ClientID'] ." ORDER BY Position DESC")->fetch_assoc()['position'];
+                settype($highestPosition, 'int');
+                $checkposition = $count + 1;
+                if ($checkposition != $highestPosition)
+                {
+                    echo "<input type=\"submit\" name=\"chartMoveDown\" class=\"button\" value=\"-->\"/>";
+                }
                 echo "</form>";
             }
             echo "</div>";
@@ -72,29 +85,44 @@
          $id = $_POST['chartID'];
          $position = $_POST['chartPos'];
          $refresh = false;
-         if (isset($_POST['chartDelete']))
+        if (isset($_POST['chartDelete']))
+        {
+            $deleteQuery = "DELETE FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id; 
+            $conn->query($deleteQuery);
+            $graphIDsQuery = "SELECT GraphID FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND Position > ". $position;
+            $graphIDs = $conn->query($graphIDsQuery);
+            if ($graphIDs->num_rows > 0)
             {
-                $deleteQuery = "DELETE FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id; 
-                echo $deleteQuery;
-                $conn->query($deleteQuery);
-                $graphIDsQuery = "SELECT GraphID FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND Position > ". $position;
-                $graphIDs = $conn->query($graphIDsQuery);
-                if ($graphIDs->num_rows > 0)
+                while($raw = $graphIDs->fetch_assoc())
                 {
-                    while($raw = $graphIDs->fetch_assoc())
-                    {
-                        $changedID = $raw['GraphID'];
-                        $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $changedID;
-                        $conn->query($queryUpdate);
-                        $position++;
-                    }
-                } 
-                $refresh = true;
-
-            }
+                    $changedID = $raw['GraphID'];
+                    $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $changedID;
+                    $conn->query($queryUpdate);
+                    $position++;
+                }
+            } 
+            $refresh = true;
+        }
+        elseif (isset($_POST['chartMoveUp']))
+        {
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". $position;
+            $conn->query($queryUpdate);
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
+            $conn->query($queryUpdate);
+            $refresh = true;
+        }
+        elseif (isset($_POST['chartMoveDown']))
+        {
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". ($position+2);
+            $conn->query($queryUpdate);
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+2) ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
+            $conn->query($queryUpdate);
+            $refresh = true;
+        }
         if ($refresh == true)
         {
             header("Location: dashboard.php");
+
         }
     }
     ?>
