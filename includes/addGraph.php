@@ -44,6 +44,15 @@ function saveAngularDataToDB($conn, $clientID, $caption, $subcaption, $input_1) 
     $addAngularQuery = "INSERT INTO graphs(ClientID, GraphName, GraphType, GraphText, config) VALUES($clientID, '$caption', 'angulargauge', '$subcaption', '$config')";
 
     mysqli_query($conn, $addAngularQuery);
+
+    $getGraphID = "SELECT GraphID FROM graphs WHERE ClientID = ". $clientID ." AND GraphName = \"". $caption ."\" ORDER BY GraphID DESC";
+    $rawData = $conn->query($getGraphID);
+    $rawGraphID = $rawData->fetch_assoc();
+    $graphID = $rawGraphID['GraphID'];
+    $date = date("d/m/Y");
+    $query = "INSERT INTO archivedgraphs (ClientID, GraphID, Date) VALUES (". $clientID .", ". $graphID .", \"". $date ."\")";
+    mysqli_query($conn, $query);
+
 }
 
 function addOtherGraphsToDB($conn, $clientID, $caption, $subcaption, $input_1, $graphType, $xAxisName, $yAxisName) {
@@ -71,7 +80,7 @@ function addOtherGraphsToDB($conn, $clientID, $caption, $subcaption, $input_1, $
     $config = json_encode($data);
     $addOtherGraphQuery = "INSERT INTO graphs(ClientID, GraphName, GraphType, GraphText, XAxisName, YAxisName, config) VALUES($clientID, '$caption', '$graphType', '$subcaption','$input1','$input2','$config')";
     mysqli_query($conn, $addOtherGraphQuery);
-    $getGraphID = "SELECT GraphID FROM graphs WHERE ClientID = ". $clientID ." AND GraphName = ". $caption ." ORDER BY GraphID DESC";
+    $getGraphID = "SELECT GraphID FROM graphs WHERE ClientID = ". $clientID ." AND GraphName = \"". $caption ."\" ORDER BY GraphID DESC";
     $rawData = $conn->query($getGraphID);
     $rawGraphID = $rawData->fetch_assoc();
     $graphID = $rawGraphID['GraphID'];
