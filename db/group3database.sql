@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2023 at 04:31 PM
+-- Generation Time: Apr 16, 2023 at 05:09 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -128,8 +128,8 @@ CREATE TABLE `graphorderuser` (
 INSERT INTO `graphorderuser` (`UserID`, `GraphID`, `Position`) VALUES
 (4, 1, 2),
 (4, 2, 1),
-(3, 1, 1),
-(3, 2, 2);
+(3, 2, 2),
+(3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -153,8 +153,8 @@ CREATE TABLE `graphs` (
 --
 
 INSERT INTO `graphs` (`GraphID`, `ClientID`, `GraphName`, `GraphType`, `GraphText`, `XAxisName`, `YAxisName`, `config`) VALUES
-(1, 1, 'Test Angular Gauge', 'angulargauge', 'Example Text', 'x', 'y', '{\n    \"chart\": {\n        \"caption\": \"Angular Graph\",\n        \"subcaption\": \"Decoding Config Direct From JSON!\",\n        \"plotToolText\": \"64\",\n        \"theme\": \"fusion\",\n        \"chartBottomMargin\": \"50\",\n        \"showValue\": \"1\"\n    },\n    \"colorRange\": {\n        \"color\": [\n            {\n                \"minValue\": \"0\",\n                \"maxValue\": \"25\",\n                \"code\": \"#e44a00\"\n            },\n            {\n                \"minValue\": \"25\",\n                \"maxValue\": \"50\",\n                \"code\": \"#f8bd19\"\n            },\n            {\n                \"minValue\": \"50\",\n                \"maxValue\": \"75\",\n                \"code\": \"#6baa01\"\n            }\n        ]\n    },\n    \"dials\": {\n        \"dial\": [\n            {\n                \"value\": \"64\",\n                \"id\": \"id\"\n            }\n        ]\n    }\n}\n'),
-(2, 1, 'Test Pie Chart', 'pie2d', 'Example Text', 'x', 'y', '{\n  \"chart\": {\n    \"caption\": \"Market Share of Web Servers\",\n    \"plottooltext\": \"<b>$percentValue</b> of web servers run on $label servers\",\n    \"showlegend\": \"1\",\n    \"showpercentvalues\": \"1\",\n    \"legendposition\": \"bottom\",\n    \"usedataplotcolorforlabels\": \"1\",\n    \"theme\": \"fusion\"\n  },\n  \"data\": [\n    {\n      \"label\": \"Apache\",\n      \"value\": \"32647479\"\n    },\n    {\n      \"label\": \"Microsoft\",\n      \"value\": \"22100932\"\n    },\n    {\n      \"label\": \"Zeus\",\n      \"value\": \"14376\"\n    },\n    {\n      \"label\": \"Other\",\n      \"value\": \"18674221\"\n    }\n  ]\n}');
+(1, 1, 'Test Angular Gauge', 'angulargauge', 'Example Text', 'x', 'y', '{\r\n    \"chart\": {\r\n        \"caption\": \"Angular Graph\",\r\n        \"subcaption\": \"Decoding Config Direct From JSON!\",\r\n        \"plotToolText\": \"64\",\r\n        \"theme\": \"fusion\",\r\n        \"exportEnabled\": \"1\",\r\n        \"chartBottomMargin\": \"50\",\r\n        \"showValue\": \"1\"\r\n    },\r\n    \"colorRange\": {\r\n        \"color\": [\r\n            {\r\n                \"minValue\": \"0\",\r\n                \"maxValue\": \"25\",\r\n                \"code\": \"#e44a00\"\r\n            },\r\n            {\r\n                \"minValue\": \"25\",\r\n                \"maxValue\": \"50\",\r\n                \"code\": \"#f8bd19\"\r\n            },\r\n            {\r\n                \"minValue\": \"50\",\r\n                \"maxValue\": \"75\",\r\n                \"code\": \"#6baa01\"\r\n            }\r\n        ]\r\n    },\r\n    \"dials\": {\r\n        \"dial\": [\r\n            {\r\n                \"value\": \"64\",\r\n                \"id\": \"id\"\r\n            }\r\n        ]\r\n    }\r\n}\r\n'),
+(2, 1, 'Test Pie Chart', 'pie2d', 'Example Text', 'x', 'y', '{\r\n  \"chart\": {\r\n    \"caption\": \"Market Share of Web Servers\",\r\n    \"plottooltext\": \"<b>$percentValue</b> of web servers run on $label servers\",\r\n    \"showlegend\": \"1\",\r\n    \"showpercentvalues\": \"1\",\r\n    \"legendposition\": \"bottom\",\r\n    \"usedataplotcolorforlabels\": \"1\",\r\n    \"theme\": \"fusion\",\r\n    \"exportEnabled\": \"1\"\r\n  },\r\n  \"data\": [\r\n    {\r\n      \"label\": \"Apache\",\r\n      \"value\": \"32647479\"\r\n    },\r\n    {\r\n      \"label\": \"Microsoft\",\r\n      \"value\": \"22100932\"\r\n    },\r\n    {\r\n      \"label\": \"Zeus\",\r\n      \"value\": \"14376\"\r\n    },\r\n    {\r\n      \"label\": \"Other\",\r\n      \"value\": \"18674221\"\r\n    }\r\n  ]\r\n}');
 
 -- --------------------------------------------------------
 

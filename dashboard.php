@@ -16,6 +16,7 @@
     <h1>Performance Dashboard: Waterman Group</h1>
     <?php
         include_once("includes/nav.php");
+        //include("includes/addGraph.php");
         include("includes/DBConnection.php");
         include("includes/addGraph.php");
         //This file is a include that makes it so that we can make graphs directky with PHP
@@ -76,6 +77,7 @@
     <?php
     $count = 0; //counts how many times the loop has fired, used to increment the chart-id's programatically.
     while($graphOrderRows = $graphOrder->fetch_assoc()){
+            $count++;
             $graphID = $graphOrderRows['GraphID'];
             $getGraphTypes = "SELECT GraphID, GraphType, GraphText, config from graphs WHERE GraphID = ". $graphID;
             $GraphTypes = $conn->query($getGraphTypes);
@@ -87,11 +89,13 @@
             $data = $conn->query("SELECT position FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $graphID);
             if ($userInfo['permission'] == "Admin")
             {
+                echo $count;
+                echo $graphID;
                 echo "<form name=". $graphID ." method=\"post\">";
-                echo "<input type=\"hidden\" name=\"chartPos\" value=". $count .">";
-                echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID .">";
+                echo "<input type=\"hidden\" name=\"chartPos\" value=". $count ." />";
+                echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID ." />";
                 //disables the left arrow if the graph is the first one
-                if ($count != 0)
+                if ($count != 1)
                 {
                     echo "<input type=\"submit\" name=\"chartMoveUp\" class=\"button\" value=\"<--\"/>";
                 }
@@ -99,8 +103,9 @@
                 //disbles the arrow on the right if it is the last graph
                 $highestPosition = $conn->query("SELECT position FROM graphorderClient WHERE ClientID = ". $userInfo['ClientID'] ." ORDER BY Position DESC")->fetch_assoc()['position'];
                 settype($highestPosition, 'int');
-                $checkposition = $count + 1;
-                if ($checkposition != $highestPosition)
+                //echo $checkposition;
+                //echo $highestPosition;
+                if ($count != $highestPosition)
                 {
                     echo "<input type=\"submit\" name=\"chartMoveDown\" class=\"button\" value=\"-->\"/>";
                 }
@@ -116,8 +121,6 @@
             // Render the chart using the retrieved configuration
             $newChart = new FusionCharts($row['GraphType'], $row['GraphID'].$count, $width, $height, "chart-".$count, "json", json_encode($config));
             $newChart->render();
-            $count++;
-
     }
     ?>
 
@@ -147,24 +150,23 @@
         }
         elseif (isset($_POST['chartMoveUp']))
         {
-            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". $position;
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". ($position-1);
             $conn->query($queryUpdate);
-            $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position-1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
             $conn->query($queryUpdate);
             $refresh = true;
         }
         elseif (isset($_POST['chartMoveDown']))
         {
-            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". ($position+2);
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". $position ." WHERE clientID = ". $userInfo['ClientID'] ." AND Position = ". ($position+1);
             $conn->query($queryUpdate);
-            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+2) ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
+            $queryUpdate = "UPDATE graphorderclient SET Position = ". ($position+1) ." WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $id;
             $conn->query($queryUpdate);
             $refresh = true;
         }
         if ($refresh == true)
         {
             header("Location: dashboard.php");
-
         }
     }
     ?>
