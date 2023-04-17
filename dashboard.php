@@ -35,20 +35,20 @@
 
     <div class="menu-container">
         <form method="post" id="my-form" action="">
-            <label for="graph-select">Graph Type:</label><br><br>
+            <label for="graph-select">Graph Type:</label>
             <select name="graph-select" id="graph-select">
                 <option value="">Graphs</option>
                 <option value="angulargauge">Angular Graph</option>
                 <option value="pie2d">Pie Chart</option>
-            </select><br><br>
-            <label for="data-select">Data Select:</label><br><br>
+            </select>
+            <label for="data-select">Data Select:</label>
             <select name="data-select" id="data-select">
                 <option value="">Data</option>
-            </select><br><br>
-            <label for="caption-input">Caption:</label><br><br>
-            <input type="text" name="caption-input"><br><br>
-            <label for="subcaption-input">Sub-caption:</label><br><br>
-            <input type="text" name="subcaption-input"><br><br>
+            </select>
+            <label for="caption-input">Caption:</label>
+            <input type="text" name="caption-input">
+            <label for="subcaption-input">Sub-caption:</label>
+            <input type="text" name="subcaption-input">
             <div id="input-fields"></div>
             <button type="submit" name="submit">Submit</button>
         </form>
@@ -89,8 +89,6 @@
             $data = $conn->query("SELECT position FROM graphorderclient WHERE clientID = ". $userInfo['ClientID'] ." AND graphID = ". $graphID);
             if ($userInfo['permission'] == "Admin")
             {
-                echo $count;
-                echo $graphID;
                 echo "<form name=". $graphID ." method=\"post\">";
                 echo "<input type=\"hidden\" name=\"chartPos\" value=". $count ." />";
                 echo "<input type=\"hidden\" name=\"chartID\" value=". $graphID ." />";
