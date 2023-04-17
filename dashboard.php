@@ -16,8 +16,8 @@
     <h1>Performance Dashboard: Waterman Group</h1>
     <?php
         include_once("includes/nav.php");
-        include("includes/addGraph.php");
         include("includes/DBConnection.php");
+        include("includes/addGraph.php");
         //This file is a include that makes it so that we can make graphs directky with PHP
         //This is the link to the GitHub Page: https://github.com/fusioncharts/php-wrapper#constructor-parameters
         include("fusioncharts.php");
@@ -25,10 +25,52 @@
         session_start();
         //All the data that is related to the user is in this array, access the data by using the names of the database fields
         $userInfo = $_SESSION['userInfo'];
+        $clientID = $userInfo['ClientID'];
         $query = "SELECT GraphID FROM graphorderclient WHERE ClientID = " . $userInfo['ClientID']. " ORDER BY Position";
         $graphOrder = $conn->query($query);
         //this is to hide a warning on line 69 and 70, there is no error it is just PHP complaining. Comment it out if you are working on this page
         ini_set('display_errors', 0);
+    ?>
+
+    <div class="menu-container">
+        <form method="post" id="my-form" action="">
+            <label for="graph-select">Graph Type:</label><br><br>
+            <select name="graph-select" id="graph-select">
+                <option value="">Graphs</option>
+                <option value="angulargauge">Angular Graph</option>
+                <option value="pie2d">Pie Chart</option>
+            </select><br><br>
+            <label for="data-select">Data Select:</label><br><br>
+            <select name="data-select" id="data-select">
+                <option value="">Data</option>
+            </select><br><br>
+            <label for="caption-input">Caption:</label><br><br>
+            <input type="text" name="caption-input"><br><br>
+            <label for="subcaption-input">Sub-caption:</label><br><br>
+            <input type="text" name="subcaption-input"><br><br>
+            <div id="input-fields"></div>
+            <button type="submit" name="submit">Submit</button>
+        </form>
+    </div>
+
+    <?php
+        if(isset($_POST['submit'])) {
+            $graphType = $_POST['graph-select'];
+            $dataSelect = $_POST['data-select'];
+            $caption = $_POST['caption-input'];
+            $subcaption = $_POST['subcaption-input'];
+            $xAxisName = $_POST['xAxisName'];
+            $$yAxisName = $_POST['yAxisName'];
+            $input_1 = $_POST['input-1'];
+            $input_2 = $_POST['input-2'];
+            $input_3 = $_POST['input-3'];
+
+            if($graphType === 'angulargauge') {
+                saveAngularDataToDB($conn, $clientID, $caption, $subcaption, $input_1);
+            } else {
+                addOtherGraphsToDB($conn, $clientID, $caption, $subcaption, $input_1, $graphType, $xAxisName, $yAxisName);
+            }
+        }
     ?>
 
     <?php
@@ -129,5 +171,5 @@
 
  <?php CloseCon($conn); ?>
 </body>
-<script type="text/javascript" src="./js/addGraph.js"></script>
 </html>
+<script type="text/javascript" src="./js/addGraph.js"></script>

@@ -1,61 +1,75 @@
-const addChartButton = document.getElementById('addChart');
-const menuContainer = document.querySelector('.menu-container');
+const inputFields = document.getElementById('input-fields');
 
-addChartButton.addEventListener('click', function() {
-  if (menuContainer.style.display === 'none') {
-    menuContainer.style.display = 'block';
-  } else {
-    menuContainer.style.display = 'none';
-  }
-});
+    document.getElementById('graph-select').addEventListener('change', (event) => {
+        inputFields.innerHTML = '';
 
-const selectDataset = document.getElementById("select-dataset");
-const selectGraphtype = document.getElementById("select-graphtype");
+        const selectedOption = event.target.value;
+        if (selectedOption === 'angulargauge') {
+            const label1 = document.createElement('label');
+            label1.textContent = "Enter Value:";
+            label1.setAttribute('for', 'input-1');
+            const input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.name = 'input-1';
 
-const datasetOptions = {
-  "percentage-legal-compliance": [
-    { value: "pie-chart", label: "Pie Chart" },
-    { value: "bar-chart", label: "Bar Chart" },
-    { value: "line-chart", label: "Line Chart" }
-  ],
-  "legal-red-tasks": [
-    { value: "bar-chart", label: "Bar Chart" },
-    { value: "line-chart", label: "Line Chart" }
-  ],
-  "legal-amber-tasks": [
-    { value: "pie-chart", label: "Pie Chart" },
-    { value: "line-chart", label: "Line Chart" }
-  ]
-};
+            inputFields.appendChild(label1);
+            inputFields.appendChild(input1);
+        } else if (selectedOption === 'pie2d') {
+            const label1 = document.createElement('label');
+            label1.textContent = "Enter Value:";
+            label1.setAttribute('for', 'input-1');
+          
+            const input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.name = 'input-1';
+            
+            inputFields.appendChild(label1);
+            inputFields.appendChild(input1);
 
-// Function to update the options in the graphtype select
-function updateGraphtypeOptions() {
-  // Get the currently selected dataset
-  const dataset = selectDataset.value;
-  // Get the options for the selected dataset
-  const options = datasetOptions[dataset];
-  // Remove all existing options
-  selectGraphtype.innerHTML = "";
-  // Add the new options
-  for (const option of options) {
-    const { value, label } = option;
-    const optionElement = document.createElement("option");
-    optionElement.value = value;
-    optionElement.textContent = label;
-    selectGraphtype.appendChild(optionElement);
-  }
-}
+            const label2 = document.createElement('label');
+            label2.textContent = "Enter Value:";
+            label2.setAttribute('for', 'input-2');
 
-// Add an event listener to the dataset select
-selectDataset.addEventListener("change", updateGraphtypeOptions);
+            const input2 = document.createElement('input');
+            input2.type = 'text';
+            input2.name = 'input-2';
+            
+            inputFields.appendChild(label2);
+            inputFields.appendChild(input2);
 
-// Call the function to populate the graphtype select with the initial options
-updateGraphtypeOptions();
+            const label3 = document.createElement('label');
+            label3.textContent = "Enter Value:";
+            label3.setAttribute('for', 'input-3');
 
-function addDataPoint() {
-  const container = document.getElementById("data-point-container");
-  const input = document.createElement("input");
-  input.type = "text";
-  input.name = "data-point[]";
-  container.appendChild(input);
-}
+            const input3 = document.createElement('input');
+            input3.type = 'text';
+            input3.name = 'input-3';
+
+            inputFields.appendChild(label3);
+            inputFields.appendChild(input3);
+        } else if (selectedOption === '') {
+            //do nothing
+        } else {
+            const label1 = document.createElement('label');
+            label1.textContent = "XAxis Name:";
+            label1.setAttribute('for', 'input-1');
+
+            const input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.name = 'input-1';
+
+            inputFields.appendChild(label1);
+            inputFields.appendChild(input1);
+
+            const label2 = document.createElement('label');
+            label2.textContent = "YAxis Name:";
+            label2.setAttribute('for','input-2');
+
+            const input2 = document.createElement('input');
+            input2.type = 'text';
+            input2.name = 'input-2';
+
+            inputFields.appendChild(label2);
+            inputFields.appendChild(input2);
+        }
+    });

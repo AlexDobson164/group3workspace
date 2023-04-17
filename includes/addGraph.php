@@ -1,34 +1,77 @@
-<link rel="stylesheet" href="./css/addChart.css">
+<?php
 
-<div class="interaction-menu">
-      <button id="addChart">Add Chart</button>
-      <button id="newReport">New Report</button>
-    </div>
+function saveAngularDataToDB($conn, $clientID, $caption, $subcaption, $input_1) {
+  $data = array(
+      "chart" => array(
+        "caption" => $caption,
+        "subcaption" => $subcaption,
+        "plotToolText" => $input_1,
+        "theme" => "fusion",
+        "chartBottomMargin" => "50",
+        "showValue" => "1"
+      ),
+      "colorRange" => array(
+        "color" => array(
+          array(
+            "minValue" => "0",
+            "maxValue" => "25",
+            "code" => "#e44a00"
+          ),
+          array(
+            "minValue" => "25",
+            "maxValue" => "50",
+            "code" => "#f8bd19"
+          ),
+          array(
+            "minValue" => "50",
+            "maxValue" => "75",
+            "code" => "#6baa01"
+          )
+        )
+      ),
+      "dials" => array(
+        "dial" => array(
+          array(
+            "value" => $input_1,
+            "id" => "id"
+          )
+        )
+      )
+    );
 
-    <div class="menu-container" style="display: none;">
-      <form action="">
-        <label for="select-dataset">Select Dataset:</label>
-        <select id="select-dataset" name="select-dataset">
-          <option value="percentage-legal-compliance">Legal Compliance Percentage</option>
-          <option value="legal-red-tasks">Legal Red Tasks Total</option>
-          <option value="legal-amber-tasks">Legal Amber Tasks Total</option>
-        </select>
+    $config = json_encode($data);
 
-        <label for="select-graphtype">Select Graph Type:</label>
-        <select id="select-graphtype" name="select-graphtype">
-          <option value="">Graphs</option>
-        </select>
+    $addAngularQuery = "INSERT INTO graphs(ClientID, GraphName, GraphType, GraphText, config) VALUES($clientID, '$caption', 'angulargauge', '$subcaption', '$config')";
 
-        <label for="graph-caption">Graph Caption:</label>
-        <input type="text" id="graph-caption" name="graph-caption">
+    mysqli_query($conn, $addAngularQuery);
+}
 
-        <label for="graph-subcaption">Graph Subcaption:</label>
-        <input type="text" id="graph-subcaption" name="graph-subcaption">
+function addOtherGraphsToDB($conn, $clientID, $caption, $subcaption, $input_1, $graphType, $xAxisName, $yAxisName) {
+  $data = array(
+    "chart" => array(
+      "caption" => $caption,
+      "subcaption" => $subcaption,
+      "xAxisName" => $xAxisName,
+      "yAxisName" => $yAxisName,
+      "showValues" => "1",
+      "theme" => "fusion"
+    ),
+    "data" => array(
+      array(
+        "label" => "label",
+        "value" => $input_1
+      ),
+      array(
+        "label" => "label",
+        "value" => $input_1
+      )
+    )
+      );
+    
+    $config = json_encode($data);
+    $addOtherGraphQuery = "INSERT INTO graphs(ClientID, GraphName, GraphType, GraphText, XAxisName, YAxisName, config) VALUES($clientID, '$caption', '$graphType', '$subcaption','$input1','$input2','$config')";
 
-        <button type="button" id="addInput" onclick="addDataPoint()">Add Data Point</button>
+    mysqli_query($conn, $addOtherGraphQuery);
+}
 
-        <div id="data-point-container"></div>
-
-        <input type="submit" value="Submit" id="form-button">
-      </form>
-    </div>
+?>
